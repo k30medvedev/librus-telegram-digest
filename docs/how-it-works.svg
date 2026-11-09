@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" role="img" aria-labelledby="t d" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <title id="t">Как это работает</title>
+  <desc id="d">Будильник cron-job.org каждый день будит GitHub. GitHub заходит в Librus, забирает оценки, пропуски, письма и расписание, собирает сводку и отправляет её через Telegram на телефоны семьи.</desc>
+  <defs>
+    <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0969da"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a7f37"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="898" height="558" rx="20" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="450" y="52" text-anchor="middle" font-size="28" font-weight="700" fill="#1f2328">Как это работает</text>
+
+  <!-- 1. cron-job.org -->
+  <rect x="40" y="95" width="220" height="130" rx="16" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <text x="150" y="140" text-anchor="middle" font-size="38">⏰</text>
+  <text x="150" y="172" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Будильник</text>
+  <text x="150" y="195" text-anchor="middle" font-size="15" fill="#59636e">cron-job.org</text>
+  <text x="150" y="214" text-anchor="middle" font-size="15" fill="#59636e">будит программу в 19:00</text>
+
+  <!-- 2. GitHub -->
+  <rect x="340" y="95" width="220" height="130" rx="16" fill="#ffffff" stroke="#0969da" stroke-width="3"/>
+  <text x="450" y="140" text-anchor="middle" font-size="38">⚙️</text>
+  <text x="450" y="172" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">GitHub Actions</text>
+  <text x="450" y="195" text-anchor="middle" font-size="15" fill="#59636e">«компьютер в интернете»,</text>
+  <text x="450" y="214" text-anchor="middle" font-size="15" fill="#59636e">на нём работает программа</text>
+
+  <!-- 3. Librus -->
+  <rect x="640" y="95" width="220" height="130" rx="16" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <text x="750" y="140" text-anchor="middle" font-size="38">📚</text>
+  <text x="750" y="172" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Librus</text>
+  <text x="750" y="195" text-anchor="middle" font-size="15" fill="#59636e">школьный дневник:</text>
+  <text x="750" y="214" text-anchor="middle" font-size="15" fill="#59636e">оценки, пропуски, письма</text>
+
+  <!-- 4. Telegram -->
+  <rect x="340" y="290" width="220" height="130" rx="16" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-size="38">✈️</text>
+  <text x="450" y="367" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Telegram-бот</text>
+  <text x="450" y="390" text-anchor="middle" font-size="15" fill="#59636e">«почтальон»:</text>
+  <text x="450" y="409" text-anchor="middle" font-size="15" fill="#59636e">разносит сводку</text>
+
+  <!-- 5. Phones -->
+  <rect x="640" y="290" width="220" height="130" rx="16" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <text x="750" y="335" text-anchor="middle" font-size="38">📱</text>
+  <text x="750" y="367" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2328">Ваши телефоны</text>
+  <text x="750" y="390" text-anchor="middle" font-size="15" fill="#59636e">мама, папа, ребёнок:</text>
+  <text x="750" y="409" text-anchor="middle" font-size="15" fill="#59636e">приходит сообщение</text>
+
+  <!-- arrows -->
+  <line x1="262" y1="160" x2="336" y2="160" stroke="#0969da" stroke-width="4" marker-end="url(#arrB)"/>
+  <line x1="562" y1="135" x2="636" y2="135" stroke="#0969da" stroke-width="4" marker-end="url(#arrB)"/>
+  <line x1="636" y1="185" x2="562" y2="185" stroke="#1a7f37" stroke-width="4" stroke-dasharray="9 6" marker-end="url(#arrG)"/>
+  <line x1="450" y1="227" x2="450" y2="286" stroke="#0969da" stroke-width="4" marker-end="url(#arrB)"/>
+  <line x1="562" y1="355" x2="636" y2="355" stroke="#0969da" stroke-width="4" marker-end="url(#arrB)"/>
+
+  <!-- step numbers -->
+  <g font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <circle cx="299" cy="132" r="15" fill="#0969da"/><text x="299" y="138">1</text>
+    <circle cx="599" cy="110" r="15" fill="#0969da"/><text x="599" y="116">2</text>
+    <circle cx="599" cy="212" r="15" fill="#1a7f37"/><text x="599" y="218">3</text>
+    <circle cx="482" cy="257" r="15" fill="#0969da"/><text x="482" y="263">4</text>
+    <circle cx="599" cy="330" r="15" fill="#0969da"/><text x="599" y="336">5</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="16" fill="#1f2328">
+    <text x="60" y="462"><tspan font-weight="700">1.</tspan> Каждый будний день в 19:00 будильник говорит GitHub: «Запускайся!»</text>
+    <text x="60" y="488"><tspan font-weight="700">2.</tspan> GitHub заходит в дневник Librus под вашим логином.</text>
+    <text x="60" y="514"><tspan font-weight="700">3.</tspan> Librus отдаёт оценки, пропуски, письма и расписание (программа только читает).</text>
+    <text x="60" y="540"><tspan font-weight="700">4–5.</tspan> Из этого собирается сводка, и Telegram доставляет её на телефоны семьи.</text>
+  </g>
+</svg>
