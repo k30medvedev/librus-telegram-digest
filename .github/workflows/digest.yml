@@ -1,0 +1,42 @@
+name: Librus digest
+
+# Triggered by an external scheduler (see README, "Scheduling with cron-job.org"),
+# because GitHub's own `schedule:` trigger is unreliable: runs are often delayed
+# by hours or skipped. You can also run it by hand from the Actions tab.
+on:
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: ${{ vars.DIGEST_TIMEZONE || 'Europe/Warsaw' }}
+      PYTHONUTF8: "1"
+      DIGEST_LANGUAGE: ${{ vars.DIGEST_LANGUAGE || 'en' }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      # Up to 5 students. Names are repository *variables*, logins/passwords are *secrets*.
+      LIBRUS_1_NAME: ${{ vars.LIBRUS_1_NAME }}
+      LIBRUS_1_LOGIN: ${{ secrets.LIBRUS_1_LOGIN }}
+      LIBRUS_1_PASSWORD: ${{ secrets.LIBRUS_1_PASSWORD }}
+      LIBRUS_2_NAME: ${{ vars.LIBRUS_2_NAME }}
+      LIBRUS_2_LOGIN: ${{ secrets.LIBRUS_2_LOGIN }}
+      LIBRUS_2_PASSWORD: ${{ secrets.LIBRUS_2_PASSWORD }}
+      LIBRUS_3_NAME: ${{ vars.LIBRUS_3_NAME }}
+      LIBRUS_3_LOGIN: ${{ secrets.LIBRUS_3_LOGIN }}
+      LIBRUS_3_PASSWORD: ${{ secrets.LIBRUS_3_PASSWORD }}
+      LIBRUS_4_NAME: ${{ vars.LIBRUS_4_NAME }}
+      LIBRUS_4_LOGIN: ${{ secrets.LIBRUS_4_LOGIN }}
+      LIBRUS_4_PASSWORD: ${{ secrets.LIBRUS_4_PASSWORD }}
+      LIBRUS_5_NAME: ${{ vars.LIBRUS_5_NAME }}
+      LIBRUS_5_LOGIN: ${{ secrets.LIBRUS_5_LOGIN }}
+      LIBRUS_5_PASSWORD: ${{ secrets.LIBRUS_5_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m librus_digest

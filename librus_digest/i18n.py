@@ -1,0 +1,76 @@
+"""UI strings. Add a language by adding one more entry to ``STRINGS``."""
+from __future__ import annotations
+
+STRINGS: dict[str, dict] = {
+    "en": {
+        "digest_title": "Digest · {weekday}, {month} {day}",
+        "grades": "Grades",
+        "average": "Average",
+        "attendance": "Absences and lateness",
+        "attendance_none": "None today",
+        "messages": "Messages",
+        "upcoming": "Coming up",
+        "school": "School",
+        "announcements": "School announcements",
+        "no_news": "No new grades or messages.",
+        "not_counted": "(not counted)",
+        "weight": "weight {w}",
+        "lesson": "lesson {n}",
+        "holiday": "day off: {name}",
+        "homework_due": "Homework due {date}",
+        "unchanged": "(unchanged)",
+        "tomorrow": "Tomorrow, {weekday} {date}",
+        "next_day": "Next school day — {weekday} {date}",
+        "tomorrow_off": "No school tomorrow.",
+        "times": "from <b>{start}</b> to <b>{end}</b>, {n} lessons",
+        "first_lesson": "First lesson: #{n}, {subject}",
+        "no_lessons": "No lessons in the timetable for the next 10 days.",
+        "plan_failed": "Could not load the timetable.",
+        "teacher": "(teacher)",
+        "error": "⚠️ {name}: {error}",
+        "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+                     "Saturday", "Sunday"],
+        "weekdays_short": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "months": ["January", "February", "March", "April", "May", "June", "July",
+                   "August", "September", "October", "November", "December"],
+    },
+    "ru": {
+        "digest_title": "Сводка · {weekday}, {day} {month}",
+        "grades": "Оценки",
+        "average": "Средний балл",
+        "attendance": "Пропуски и опоздания",
+        "attendance_none": "Сегодня нет",
+        "messages": "Сообщения",
+        "upcoming": "Впереди",
+        "school": "Школа",
+        "announcements": "Объявления школы",
+        "no_news": "Новых оценок и сообщений нет.",
+        "not_counted": "(не считается)",
+        "weight": "вес {w}",
+        "lesson": "{n}-й урок",
+        "holiday": "выходной: {name}",
+        "homework_due": "ДЗ до {date}",
+        "unchanged": "(без изменений)",
+        "tomorrow": "Завтра, {weekday} {date}",
+        "next_day": "Ближайший учебный день — {weekday} {date}",
+        "tomorrow_off": "Завтра выходной.",
+        "times": "к <b>{start}</b>, до <b>{end}</b>, уроков: {n}",
+        "first_lesson": "Первый урок: {n}-й, {subject}",
+        "no_lessons": "Ближайшие 10 дней уроков в расписании нет.",
+        "plan_failed": "Расписание получить не удалось.",
+        "teacher": "(учитель)",
+        "error": "⚠️ {name}: {error}",
+        "weekdays": ["понедельник", "вторник", "среда", "четверг", "пятница",
+                     "суббота", "воскресенье"],
+        "weekdays_short": ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+        "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                   "августа", "сентября", "октября", "ноября", "декабря"],
+    },
+}
+
+DEFAULT_LANGUAGE = "en"
+
+
+def get_strings(language: str) -> dict:
+    """Strings for *language*, falling back to English."""
+    return STRINGS.get(language, STRINGS[DEFAULT_LANGUAGE])
