@@ -172,6 +172,28 @@ curl -X POST \
   -d '{"ref":"main"}'
 ```
 
+### If Librus does not answer GitHub's servers
+
+Librus sometimes drops connections from GitHub's data-centre IP addresses: DNS works but
+the TCP connection never completes, the run hangs and is cancelled after the job
+timeout (the bot now aborts after 90 s per account, retries once and reports the error
+in the chat). This is outside the bot's control and can come and go.
+
+If it happens, run the bot from a machine on a normal home connection instead. On
+Windows, a scheduled task does the job (adjust the paths, and use your own Python):
+
+```powershell
+$a = New-ScheduledTaskAction -Execute "cmd.exe" -WorkingDirectory "C:\path\to\librus-telegram-digest" `
+  -Argument '/c "set PYTHONUTF8=1&& python -m librus_digest >> librus-digest.log 2>&1"'
+$t = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday,Tuesday,Wednesday,Thursday,Friday -At 19:00
+$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+Register-ScheduledTask -TaskName LibrusDigest -Action $a -Trigger $t -Settings $s
+```
+
+On Linux/macOS use cron: `0 19 * * 1-5 cd /path/to/repo && python -m librus_digest`.
+The local setup reads the same settings from a `.env` file (see `.env.example`). Turn
+the cron-job.org job off while you run it locally, otherwise you get duplicates.
+
 ## Development
 
 ```bash

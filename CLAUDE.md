@@ -83,6 +83,11 @@ Data flow: `LibrusSession` (client) → models → `digest.build_account_report`
   state (the GitHub Actions runner is stateless).
 - GitHub's `schedule:` trigger is unreliable (delays/skips), hence the external
   cron-job.org trigger via `workflow_dispatch`.
+- **Librus may drop connections from GitHub-hosted runners** (DNS resolves, TCP connect
+  never completes; confirmed with a curl timing step). Symptoms: the Actions run hangs
+  and is cancelled. `digest.py` guards every account with a timeout and one retry, but
+  the fix is to run the bot from a home connection (Task Scheduler / cron), see
+  README "If Librus does not answer GitHub's servers".
 - A local antivirus that intercepts HTTPS can cause `CERTIFICATE_VERIFY_FAILED` against
   api.librus.pl; disable it for the run or test in GitHub Actions.
 - Do not commit real names, chat ids, tokens or Librus credentials, including in tests
