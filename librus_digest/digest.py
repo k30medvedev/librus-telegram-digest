@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import logging
+import threading
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Callable
@@ -15,6 +17,33 @@ from .telegram import send_message
 log = logging.getLogger(__name__)
 
 UPCOMING_DAYS = 10
+ACCOUNT_TIMEOUT = 90    # seconds one attempt for one account may take
+ACCOUNT_ATTEMPTS = 2    # retries only for timeouts and network errors
+
+
+def _call_with_timeout(func: Callable, timeout: float):
+    """Run *func* in a daemon thread and give up after *timeout* seconds.
+
+    The scraper library has no request timeouts, so a stalled Librus connection
+    would otherwise block the whole run until the CI job is killed. The abandoned
+    thread is a daemon and does not keep the process alive.
+    """
+    outcome: dict = {}
+
+    def target():
+        try:
+            outcome["value"] = func()
+        except BaseException as exc:  # noqa: BLE001 - re-raised in the caller
+            outcome["error"] = exc
+
+    thread = threading.Thread(target=target, daemon=True)
+    thread.start()
+    thread.join(timeout)
+    if thread.is_alive():
+        raise TimeoutError(f"no response from Librus within {timeout:g}s")
+    if "error" in outcome:
+        raise outcome["error"]
+    return outcome["value"]
 
 
 @dataclass
@@ -97,7 +126,10 @@ def build_account_report(session, name: str, renderer: Renderer, now: datetime) 
 def run_digest(settings: Settings,
                session_factory: Callable | None = None,
                send: Callable[[str], object] | None = None,
-               now: datetime | None = None) -> list[str]:
+               now: datetime | None = None,
+               account_timeout: float = ACCOUNT_TIMEOUT,
+               attempts: int = ACCOUNT_ATTEMPTS,
+               retry_pause: float = 5.0) -> list[str]:
     """Fetch every account and send the digest. Returns the messages produced."""
     if session_factory is None:
         from .client import LibrusSession as session_factory  # lazy: needs librus-apix
@@ -109,9 +141,21 @@ def run_digest(settings: Settings,
     announcements: list[Announcement] = []
     seen: set[tuple[str, str]] = set()
     for account in settings.accounts:
-        try:
-            report = build_account_report(
+        def fetch(account=account):
+            return build_account_report(
                 session_factory(account.login, account.password), account.name, renderer, now)
+
+        try:
+            for attempt in range(1, attempts + 1):
+                try:
+                    log.info("Fetching %s (attempt %d/%d)", account.name, attempt, attempts)
+                    report = _call_with_timeout(fetch, account_timeout)
+                    break
+                except (TimeoutError, OSError) as exc:  # transient: try again
+                    if attempt == attempts:
+                        raise
+                    log.warning("%s: %s, retrying", account.name, type(exc).__name__)
+                    time.sleep(retry_pause)
             reports.append(report.text)
             for a in report.announcements:  # same school announcements for siblings: show once
                 if (a.title, a.date) not in seen:

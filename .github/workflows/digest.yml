@@ -9,7 +9,7 @@ on:
 jobs:
   digest:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       TZ: ${{ vars.DIGEST_TIMEZONE || 'Europe/Warsaw' }}
       PYTHONUTF8: "1"

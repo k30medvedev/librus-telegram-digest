@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import socket
 import sys
 from dataclasses import replace
 
@@ -28,6 +29,7 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     load_dotenv(args.env_file)
+    socket.setdefaulttimeout(60)  # the scraper's HTTP calls have no timeout of their own
     try:
         settings = load_settings()
     except ConfigError as exc:

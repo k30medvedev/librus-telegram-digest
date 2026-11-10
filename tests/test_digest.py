@@ -153,3 +153,46 @@ def test_run_digest_reports_a_failing_account_and_continues():
     assert "Anna" in messages[0] and "ConnectionError" in messages[0]
     assert "secret-pw" not in "".join(messages)
     assert messages[1].startswith("<b>BEN</b>")
+
+
+def test_hanging_account_times_out_and_the_next_one_still_runs():
+    import threading
+    release = threading.Event()
+
+    def factory(login, password):
+        if login == "1":
+            release.wait(5)          # simulates Librus never answering
+        return FakeSession()
+
+    messages = run_digest(settings([Account("Anna", "1", "p"), Account("Ben", "2", "p")]),
+                          session_factory=factory, send=lambda t: None, now=FRIDAY,
+                          account_timeout=0.2, attempts=1)
+    release.set()
+    assert "Anna" in messages[0] and "TimeoutError" in messages[0]
+    assert messages[1].startswith("<b>BEN</b>")
+
+
+def test_network_errors_are_retried_once_then_succeed():
+    calls = []
+
+    def factory(login, password):
+        calls.append(login)
+        if len(calls) == 1:
+            raise ConnectionError("reset by peer")
+        return FakeSession()
+
+    messages = run_digest(settings([Account("Anna", "1", "p")]), session_factory=factory,
+                          send=lambda t: None, now=FRIDAY, retry_pause=0)
+    assert len(calls) == 2 and messages[0].count("ANNA") == 1
+
+
+def test_login_errors_are_not_retried():
+    calls = []
+
+    def factory(login, password):
+        calls.append(login)
+        raise ValueError("wrong password")
+
+    messages = run_digest(settings([Account("Anna", "1", "p")]), session_factory=factory,
+                          send=lambda t: None, now=FRIDAY, retry_pause=0)
+    assert len(calls) == 1 and "ValueError" in messages[0]
