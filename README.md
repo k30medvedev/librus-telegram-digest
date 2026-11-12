@@ -183,7 +183,7 @@ If it happens, run the bot from a machine on a normal home connection instead. O
 Windows, a scheduled task does the job (adjust the paths, and use your own Python):
 
 ```powershell
-$a = New-ScheduledTaskAction -Execute "cmd.exe" -WorkingDirectory "C:\path	o\librus-telegram-digest" `
+$a = New-ScheduledTaskAction -Execute "cmd.exe" -WorkingDirectory "C:\path\to\librus-telegram-digest" `
   -Argument '/c "set PYTHONUTF8=1&& python -m librus_digest --once-per-day >> librus-digest.log 2>&1"'
 $t = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday,Tuesday,Wednesday,Thursday,Friday -At 19:00
 # retry every 20 minutes for 5 hours; --once-per-day makes later attempts a no-op after success
