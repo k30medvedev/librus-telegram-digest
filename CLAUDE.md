@@ -92,3 +92,8 @@ Data flow: `LibrusSession` (client) → models → `digest.build_account_report`
   api.librus.pl; disable it for the run or test in GitHub Actions.
 - Do not commit real names, chat ids, tokens or Librus credentials, including in tests
   and fixtures. Use made-up data.
+- Windows machines with antivirus HTTPS inspection fail with `CERTIFICATE_VERIFY_FAILED`
+  against Python's certifi bundle; `cli.py` therefore injects the OS trust store via
+  `truststore` (a requirement). Don't remove it.
+- For local scheduling use `--once-per-day` plus a repeating trigger; a single trigger was
+  observed to be skipped by Windows Task Scheduler once.

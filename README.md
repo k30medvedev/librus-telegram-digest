@@ -101,7 +101,7 @@ All settings are environment variables; a local `.env` file is read automaticall
 | `LIBRUS_2_*`, `LIBRUS_3_*`, … | no | More students; numbering must have no gaps |
 | `DIGEST_LANGUAGE` | no | `en` or `ru` (default `ru`) |
 
-Command line: `--dry-run`, `--language en|ru`, `--env-file PATH`, `--version`.
+Command line: `--dry-run`, `--once-per-day`, `--language en|ru`, `--env-file PATH`, `--version`.
 
 ## Run it daily on GitHub Actions + cron-job.org
 
@@ -183,14 +183,22 @@ If it happens, run the bot from a machine on a normal home connection instead. O
 Windows, a scheduled task does the job (adjust the paths, and use your own Python):
 
 ```powershell
-$a = New-ScheduledTaskAction -Execute "cmd.exe" -WorkingDirectory "C:\path\to\librus-telegram-digest" `
-  -Argument '/c "set PYTHONUTF8=1&& python -m librus_digest >> librus-digest.log 2>&1"'
+$a = New-ScheduledTaskAction -Execute "cmd.exe" -WorkingDirectory "C:\path	o\librus-telegram-digest" `
+  -Argument '/c "set PYTHONUTF8=1&& python -m librus_digest --once-per-day >> librus-digest.log 2>&1"'
 $t = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday,Tuesday,Wednesday,Thursday,Friday -At 19:00
-$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+# retry every 20 minutes for 5 hours; --once-per-day makes later attempts a no-op after success
+$t.Repetition = (New-ScheduledTaskTrigger -Once -At 19:00 -RepetitionInterval (New-TimeSpan -Minutes 20) `
+  -RepetitionDuration (New-TimeSpan -Hours 5)).Repetition
+$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+  -MultipleInstances IgnoreNew
 Register-ScheduledTask -TaskName LibrusDigest -Action $a -Trigger $t -Settings $s
 ```
 
-On Linux/macOS use cron: `0 19 * * 1-5 cd /path/to/repo && python -m librus_digest`.
+`--once-per-day` stores today's date in `.digest-last-sent` after a successful delivery
+and skips the run if the digest was already sent today, so a scheduler can safely retry
+(a missed trigger, a sleeping PC, a flaky network) without sending duplicates.
+
+On Linux/macOS use cron: `0,20,40 19-23 * * 1-5 cd /path/to/repo && python -m librus_digest --once-per-day`.
 The local setup reads the same settings from a `.env` file (see `.env.example`). Turn
 the cron-job.org job off while you run it locally, otherwise you get duplicates.
 

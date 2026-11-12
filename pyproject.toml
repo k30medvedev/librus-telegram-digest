@@ -9,7 +9,7 @@ description = "Daily Librus Synergia digest (grades, absences, messages, timetab
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-dependencies = ["librus-apix>=1.6,<2", "requests>=2.31"]
+dependencies = ["librus-apix>=1.6,<2", "requests>=2.31", "truststore>=0.9"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
