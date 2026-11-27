@@ -1,0 +1,12 @@
+.env
+state.json
+recipients.txt
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+*.log
+.digest-last-sent
+preview.txt

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 700" width="560" height="700" role="img" aria-labelledby="t d" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <title id="t">Пример сообщения в Telegram</title>
+  <desc id="d">Пример ежедневной сводки: оценки за день, пропуски, что будет на неделе и во сколько завтра в школу.</desc>
+
+  <rect x="1" y="1" width="558" height="698" rx="20" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="280" y="50" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2328">Так выглядит сообщение в Telegram</text>
+  <text x="280" y="76" text-anchor="middle" font-size="15" fill="#59636e">(пример с вымышленными данными)</text>
+
+  <!-- chat bubble -->
+  <rect x="40" y="98" width="480" height="570" rx="22" fill="#ffffff" stroke="#d0d7de" stroke-width="2"/>
+  <g font-size="16" fill="#1f2328">
+    <text x="64" y="132" font-weight="700">Сводка · пятница, 6 ноября</text>
+
+    <text x="64" y="172" font-weight="700" font-size="18">МАША</text>
+
+    <text x="64" y="204">📝 <tspan font-weight="700">Оценки</tspan></text>
+    <text x="64" y="228">🟡 <tspan font-weight="700">3</tspan>  Chemia</text>
+    <text x="96" y="249" font-style="italic" fill="#59636e">kartkówka, вес 1</text>
+    <text x="64" y="274">🔵 <tspan font-weight="700">4</tspan>  Fizyka</text>
+    <text x="96" y="295" font-style="italic" fill="#59636e">odpowiedź ustna, вес 1</text>
+
+    <text x="64" y="326" font-weight="700">Средний балл</text>
+    <text x="64" y="349">Chemia: 4,10 → <tspan font-weight="700">3,98</tspan></text>
+
+    <text x="64" y="386">🚫 <tspan font-weight="700">Пропуски и опоздания</tspan></text>
+    <text x="64" y="409">✅ Сегодня нет</text>
+
+    <text x="64" y="446">📅 <tspan font-weight="700">Впереди</tspan></text>
+    <text x="64" y="469"><tspan font-weight="700">Вт 10.11</tspan>  🔴 Chemia — sprawdzian, 6-й урок</text>
+    <text x="64" y="492"><tspan font-weight="700">Ср 11.11</tspan>  выходной: День независимости</text>
+
+    <text x="64" y="530">🏫 <tspan font-weight="700">Школа</tspan></text>
+    <text x="64" y="553">Завтра выходной.</text>
+    <text x="64" y="576">Ближайший учебный день — понедельник 09.11:</text>
+    <text x="64" y="599">к <tspan font-weight="700">08:50</tspan>, до <tspan font-weight="700">15:50</tspan>, уроков: 8</text>
+    <text x="64" y="628" font-style="italic" fill="#59636e">Первый урок: 2-й, Safety at work</text>
+  </g>
+</svg>
